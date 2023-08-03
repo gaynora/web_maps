@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>House prices</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+
+<style>
+.legend label,
+.legend span {
+  display:block;
+  float:left;
+  height:15px;
+  width:16%;
+  text-align:center;
+  font-size:9px;
+  color:#808080;
+  }
+</style>
+
+<!-- Set the display of this container to none so we can
+     add it programmatically to `legendControl` -->
+<div id='legend' style='display:none;'>
+  <strong>House price change: £ price paid domestic property % change 2012-2022</strong>
+  <nav class='legend clearfix'>
+    <span style='background:#8d00a3;'></span>
+    <span style='background:#ff9eff;'></span>
+    <span style='background:#f7ebfa;'></span>
+    <span style='background:#c2f0b7;'></span>
+    <span style='background:#255b1f;'></span>
+    <span style='background:#000000;'></span>  
+    <label>< 0</label>
+    <label>0-12</label>
+    <label>12-24</label>
+    <label>24-36</label>
+    <label>36-48</label>
+    <label>>48</label>  
+    <small>The method can be <a href="https://github.com/gaynora/house_prices/blob/main/pricepaid_2012_2022.py" target="_blank">found here.</a>It tracks individual property sales using HMLR Price Paid <a href="https://landregistry.data.gov.uk/" target="_blank">Open Data.</a>This is a relative measure tracking long-term property value uplift.</small>
+</div>
+<div id='map'></div>
+
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoiZ2F5bm9yYSIsImEiOiJCdks1a0hvIn0.DptyZtugztHA3sYbU2wZwg';
+  var map = L.mapbox.map('map')
+    .setView([51.475,-0.059], 9)
+    .addLayer(L.mapbox.styleLayer('mapbox://styles/gaynora/cljv6quuu01s601qy116r262e'));
+
+  map.legendControl.addLegend(document.getElementById('legend').innerHTML);
+  map.legendControl.setPosition('topright');
+
+//limit to min zoom level 8, max zoom level 22
+//legend complete - plus can we get extra info on the legend bar?
+</script>
+
+</body>
+</html>
+
+
