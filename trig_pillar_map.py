@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Boilerplate for a Folium map as a wrapper to Leaflet.js
+Boilerplate for a Folium map as a wrapper to Leaflet.js 
 with bootstrap icons / pop-ups with images / 
 csv derived locations from dataframe coords / user geolocate / OS and OSM tile options
 Trip pillars were the context
@@ -68,10 +68,28 @@ m = folium.Map(location=[53.780948, -1.959399],
                min_zoom=7, 
                max_zoom=16,
                tiles=None,
-               #attr='OS',
+               attr='Method uses open data', 
                control_scale=True,
                )
 
+# add brief text to act as title / basic legend
+map_title = "Accessible trig pillars"
+title_html = f'<h4 style="position:absolute;z-index:100000;left:1vw; bottom: 8vh; color:#000000; background-color:#ffffff" >{map_title}</h4>'
+m.get_root().html.add_child(folium.Element(title_html))
+map_title = "Visited in blue"
+title_html = f'<h4 style="position:absolute;z-index:100000;left:1vw; bottom:5vh; color:#0000FF; background-color:#ffffff" >{map_title}</h4>'
+m.get_root().html.add_child(folium.Element(title_html))
+map_title = 'Method uses open data from OSGB, Natural England, NatureScot, NRW, Scottish Gov, Local Authorities and the brilliant www.rowmaps.com'
+title_html = f'<h6 style="position:absolute;z-index:100000;left:1vw; bottom:1vh; color:#000000; background-color:#ffffff" >{map_title}</h6>'
+m.get_root().html.add_child(folium.Element(title_html))
+
+# Function to determine marker color based on category
+def get_marker_color(category):
+    color_dict = {
+        'Yes': 'blue',
+        'No': 'black'
+    }
+    return color_dict.get(category, 'black')
 
 # Add markers with popups containing images and custom icon
 for index, row in df.iterrows():
@@ -83,15 +101,16 @@ for index, row in df.iterrows():
         <h5>Public Right of Way within 10 metres: {row["PROW10M"]}</h5>\
         <h5>Public road within 10 metres: {row["ROAD10M"]}</h5>\
         <h5>Crops (Scotland): {row["Scotcrop"]}</h5>\
-            <img src="{row["Image"]}" alt="Still to visit" style="width:200px;">'
+            <img src="{row["Image"]}" alt="No image" style="width:200px;">'
     popup = folium.Popup(popup_content, max_width=300)
+    color_ = get_marker_color(row['Visited'])
     folium.Marker([row['lat'], row['long']], popup=popup,
                   icon=folium.DivIcon(html=f"""
-                                      <div style="font-size: 10px; color: black;">               
+                                      <div style="font-size: 10px; color: {color_};">               
                                       <i class="glyphicon glyphicon-hdd"></i>
                                       </div>
-                                      """
-                      )
+                                      """)
+                      
                   #icon=folium.DivIcon(html=f"""<a>
                          # <div style="font-size: 10em;">
                           #<div style="width: 10px;
@@ -121,6 +140,5 @@ folium.plugins.LocateControl().add_to(m)
 m.save(outfile='trig_pillar_map.html')
 
 # ADD LEGEND, TITLE
-# COLOUR MARKERS ON VISITED OR NOT
 # SHOW SEPERATE CONNIE LAYER
 # ADD PROW, OPEN ACCESS AREAS VECTOR TILES TIPPECANOE or QGIS QTILE RASTER TILES
