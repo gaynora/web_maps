@@ -11,6 +11,7 @@ Trip pillars were the context
 import pandas
 import folium
 from folium.plugins import LocateControl
+from folium.plugins import MeasureControl
 
 # read trig pillar data
 df = pandas.read_csv('trig_pillars_current_accessible_4326.csv')
@@ -137,8 +138,15 @@ folium.LayerControl().add_to(m)
 # add button to locate individual via their device on a map
 folium.plugins.LocateControl().add_to(m)
 
+# add measure distance tool to map
+m.add_child(MeasureControl(#position="top left",
+                           active_color="red",
+                           completed_color="red",
+                           primary_length_unit='kilometers', 
+                           secondary_length_unit='miles', 
+                           primary_area_unit='sqmeters', 
+                           secondary_area_unit='acres')
+            )
+
 m.save(outfile='trig_pillar_map.html')
 
-# ADD LEGEND, TITLE
-# SHOW SEPERATE CONNIE LAYER
-# ADD PROW, OPEN ACCESS AREAS VECTOR TILES TIPPECANOE or QGIS QTILE RASTER TILES
