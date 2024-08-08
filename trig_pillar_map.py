@@ -133,7 +133,15 @@ folium.TileLayer("OpenStreetMap", name='Open Street Map', show=False, control=Tr
 # Tiles here
 
 # add layer control - this needs to be placed last in the code after all layers are declared
-folium.LayerControl().add_to(m)
+folium.LayerControl().add_to(m) 
+'''
+The method utilises the Geolocation API and getCurrentPosition() which queries the positioning hardware to get information.
+By default, getCurrentPosition() tries to answer as fast as possible with a low accuracy result. 
+Devices with a GPS, for example, can take a minute or more to get a GPS fix, so less accurate data (IP location or Wi-Fi) may be returned 
+to getCurrentPosition(). 
+In rural areas where Google's 'Improve Location Accuracy' setting is used, it counterintuitively reduces the accuracy of the estimated location 
+coordinates: the tool is better used without this setting enabled.
+'''
 
 # add button to locate individual via their device on a map
 folium.plugins.LocateControl().add_to(m)
